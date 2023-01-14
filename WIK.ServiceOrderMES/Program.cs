@@ -16,11 +16,11 @@ namespace WIK.ServiceOrderMES
                 {
                     s.ConstructUsing(streamfile => new StreamFile());
                     s.WhenStarted(streamfile => {
-                        //streamfile.Start();
+                        streamfile.Start();
                         EventLogUtil.LogEvent("WIK Service Order MES started successfully", System.Diagnostics.EventLogEntryType.Information, 3);
                     });
                     s.WhenStopped(streamfile => {
-                        //streamfile.Stop();
+                        streamfile.Stop();
                         EventLogUtil.LogEvent("WIK Service Order MES stopped successfully", System.Diagnostics.EventLogEntryType.Information, 3);
                     });
                 });
