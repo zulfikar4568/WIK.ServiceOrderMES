@@ -104,6 +104,10 @@
     <Compile Include="UseCase\Order\Order.cs" />
     <Compile Include="UseCase\UseCase.cs" />
     <Compile Include="Util\EventLogUtil.cs" />
+    <Compile Include="Util\Logging.cs" />
+    <Compile Include="Util\NetUtil.cs" />
+    <Compile Include="Util\NetworkUNC.cs" />
+    <Compile Include="Util\Simple3Des.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">

@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using WIK.ServiceOrderMES.Config;
+using WIK.ServiceOrderMES.Util;
 
 namespace WIK.ServiceOrderMES
 {
@@ -11,6 +14,17 @@ namespace WIK.ServiceOrderMES
     {
         private readonly Driver.IFileWatcher<UseCase.IOrder, Driver.FileWatcherInstance.OrderFileWatcherInstance> _watcherOrder;
         private readonly Driver.IFileWatcher<UseCase.IOrderBOM, Driver.FileWatcherInstance.OrderBOMFileWatcherInstance> _watcherOrderBOM;
+        private void ConnectDirectoryServer()
+        {
+            try
+            {
+                NetworkUNC.Connect();
+            }
+            catch (Exception ex)
+            {
+                EventLogUtil.LogErrorEvent(AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source, ex);
+            }
+        }
 
         public StreamFile()
         {
@@ -26,6 +40,7 @@ namespace WIK.ServiceOrderMES
 
         public void Start()
         {
+            ConnectDirectoryServer();
             _watcherOrder.Init();
             _watcherOrderBOM.Init();
         }
