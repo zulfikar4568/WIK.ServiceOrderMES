@@ -11,7 +11,7 @@ namespace WIK.ServiceOrderMES.Util
     {
         protected override void Load(ContainerBuilder moduleBuilder)
         {
-            moduleBuilder.RegisterType<NetworkUNC>().AsSelf();
+            // Module Util
         }
     }
 }

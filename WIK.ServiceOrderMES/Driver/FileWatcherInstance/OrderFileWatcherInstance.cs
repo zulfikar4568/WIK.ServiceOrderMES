@@ -12,16 +12,8 @@ namespace WIK.ServiceOrderMES.Driver.FileWatcherInstance
 {
     class OrderFileWatcherInstance : BaseFileWatcherInstance
     {
-        public OrderFileWatcherInstance(NetworkUNC network)
+        public OrderFileWatcherInstance()
         {
-            try
-            {
-                network.Connect();
-            }
-            catch (Exception ex)
-            {
-                EventLogUtil.LogErrorEvent(AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source, ex);
-            }
             Instance = new FileSystemWatcher(AppSettings.OrderFolder);
             Instance.Filter = AppSettings.OrderFile;
         }

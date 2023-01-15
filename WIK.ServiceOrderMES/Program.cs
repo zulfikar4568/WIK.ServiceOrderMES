@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Topshelf;
 using WIK.ServiceOrderMES.Config;
 using WIK.ServiceOrderMES.Util;
@@ -11,7 +12,8 @@ namespace WIK.ServiceOrderMES
         {
             var exitCode = HostFactory.Run(x =>
             {
-                AppSettings.AssemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                AppSettings.AssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+                ConnectionNetwork();
                 x.Service<StreamFile>(s =>
                 {
                     s.ConstructUsing(streamfile => new StreamFile());
@@ -32,6 +34,18 @@ namespace WIK.ServiceOrderMES
 
             int exitCodeValue = (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());
             Environment.ExitCode = exitCodeValue;
+        }
+
+        public static void ConnectionNetwork()
+        {
+            try
+            {
+                NetworkUNC.Connect();
+            }
+            catch (Exception ex)
+            {
+                EventLogUtil.LogErrorEvent(AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source, ex);
+            }
         }
     }
 }
