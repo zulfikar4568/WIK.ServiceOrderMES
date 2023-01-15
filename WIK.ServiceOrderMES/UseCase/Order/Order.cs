@@ -171,7 +171,7 @@ namespace WIK.ServiceOrderMES.UseCase
             {
                 foreach (var item in orderStatusrray)
                 {
-                    if (AppSettings.FilterOrderStatus.Contains(orderStatus))
+                    if (AppSettings.FilterOrderStatus.Contains(item))
                     {
                         orderStatusChecked = item;
                         counter++;
