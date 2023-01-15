@@ -154,6 +154,13 @@ namespace WIK.ServiceOrderMES.Config
                 return ConfigurationManager.AppSettings["CachedHost"];
             }
         }
+        public static int CachedExpirationInDay
+        {
+            get
+            {
+                return Convert.ToInt32(ConfigurationManager.AppSettings["CachedExpirationInDay"]);
+            }
+        }
         #endregion
 
         #region ORDER FILTER
