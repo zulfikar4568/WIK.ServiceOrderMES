@@ -75,5 +75,15 @@ namespace WIK.ServiceOrderMES.Config
             }
         }
         #endregion
+
+        #region CACHED
+        public static string CachedHost
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["CachedHost"];
+            }
+        }
+        #endregion
     }
 }

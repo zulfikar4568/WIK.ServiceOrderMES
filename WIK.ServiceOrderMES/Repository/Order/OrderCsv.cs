@@ -13,15 +13,15 @@ using WIK.ServiceOrderMES.Util;
 
 namespace WIK.ServiceOrderMES.Repository
 {
-    public interface IOrderBOM
+    public interface IOrderCsv
     {
-        List<Entity.OrderBOM> Reading(string delimiter, string sourceFile);
+        List<Entity.Order> Reading(string delimiter, string sourceFile);
     }
-    public class OrderBOM : IOrderBOM
+    public class OrderCsv : IOrderCsv
     {
-        public List<Entity.OrderBOM> Reading(string delimiter, string sourceFile)
+        public List<Entity.Order> Reading(string delimiter, string sourceFile)
         {
-            List<Entity.OrderBOM> result = new List<Entity.OrderBOM>();
+            List<Entity.Order> result = new List<Entity.Order>();
             var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 Encoding = Encoding.UTF8, // Our file uses UTF-8 encoding.
@@ -34,7 +34,7 @@ namespace WIK.ServiceOrderMES.Repository
                 using (var reader = new StreamReader(sourceFile))
                 using (var csv = new CsvReader(reader, configuration))
                 {
-                    var records = csv.GetRecords<Entity.OrderBOM>();
+                    var records = csv.GetRecords<Entity.Order>();
                     result = records.ToList();
                 }
             }

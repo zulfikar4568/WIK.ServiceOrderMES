@@ -12,10 +12,12 @@ namespace WIK.ServiceOrderMES.UseCase
     }
     public class Order : IOrder
     {
-        private readonly Repository.IOrder _repository;
-        public Order(Repository.IOrder repository)
+        private readonly Repository.IOrderCsv _repositoryCsv;
+        private readonly Repository.IOrderCached _repositoryCached;
+        public Order(Repository.IOrderCsv repositoryCsv, Repository.IOrderCached repositoryCached)
         {
-            _repository = repository;
+            _repositoryCsv = repositoryCsv;
+            _repositoryCached = repositoryCached;
         }
         public void MainLogic(string delimiter, string sourceFile)
         {

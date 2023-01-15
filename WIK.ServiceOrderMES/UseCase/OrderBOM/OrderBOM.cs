@@ -12,10 +12,12 @@ namespace WIK.ServiceOrderMES.UseCase
     }
     public class OrderBOM : IOrderBOM
     {
-        private readonly Repository.IOrderBOM _repository;
-        public OrderBOM(Repository.IOrderBOM repository)
+        private readonly Repository.IOrderBOMCsv _repositoryCsv;
+        private readonly Repository.IOrderCached _repositoryCached;
+        public OrderBOM(Repository.IOrderBOMCsv repositoryCsv, Repository.IOrderCached repositoryCached)
         {
-            _repository = repository;
+            _repositoryCsv = repositoryCsv;
+            _repositoryCached = repositoryCached;
         }
 
         public void MainLogic(string delimiter, string path)
