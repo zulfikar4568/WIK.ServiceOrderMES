@@ -55,7 +55,9 @@ namespace WIK.ServiceOrderMES.Driver
             }
             Console.WriteLine($"Changed: {e.FullPath}");
             EventLogUtil.LogEvent($"Changed: {e.FullPath}", System.Diagnostics.EventLogEntryType.Information);
-            _usecase.MainLogic(",", e.FullPath);
+            var task = Task.Run(() => _usecase.MainLogic(";", e.FullPath));
+            task.Wait();
+
         }
 
         private void OnCreated(object sender, FileSystemEventArgs e)

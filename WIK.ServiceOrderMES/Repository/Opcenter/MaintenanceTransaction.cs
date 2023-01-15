@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WIK.ServiceOrderMES.Config;
+using WIK.ServiceOrderMES.Util;
 
 namespace WIK.ServiceOrderMES.Repository
 {
@@ -17,6 +18,11 @@ namespace WIK.ServiceOrderMES.Repository
         {
             _maintenanceTxn = maintenanceTxn;
             _helper = helper;
+        }
+        public bool ProductExists(string ProductName, string ProductRevision = "")
+        {
+            ProductMaintService oServiceProduct = new ProductMaintService(AppSettings.ExCoreUserProfile);
+            return _helper.ObjectExists(oServiceProduct, new ProductMaint(), ProductName, ProductRevision);
         }
         public bool SaveOrderType(string Name, string Description = "", bool IgnoreException = true)
         {
@@ -84,9 +90,9 @@ namespace WIK.ServiceOrderMES.Repository
                     }
                 }
             }
-            if (_helper.IsDate(PlannedStartDate)) objectChanges.PlannedStartDate = new Primitive<DateTime>() { Value = Convert.ToDateTime(PlannedStartDate) };
-            if (_helper.IsDate(PlannedCompletedDate)) objectChanges.PlannedCompletionDate = new Primitive<DateTime>() { Value = Convert.ToDateTime(PlannedCompletedDate) };
-            if (_helper.IsDate(ReleaseDate)) objectChanges.ReleaseDate = new Primitive<DateTime>() { Value = Convert.ToDateTime(ReleaseDate) };
+            if (Formatting.IsDate(PlannedStartDate)) objectChanges.PlannedStartDate = new Primitive<DateTime>() { Value = Convert.ToDateTime(PlannedStartDate) };
+            if (Formatting.IsDate(PlannedCompletedDate)) objectChanges.PlannedCompletionDate = new Primitive<DateTime>() { Value = Convert.ToDateTime(PlannedCompletedDate) };
+            if (Formatting.IsDate(ReleaseDate)) objectChanges.ReleaseDate = new Primitive<DateTime>() { Value = Convert.ToDateTime(ReleaseDate) };
             return _maintenanceTxn.MfgOrderTxn(objectChanges, IgnoreException);
         }
         public bool SaveProduct(string ProductName, string Revision, string IsRevOfRcd = "", string Description = "", string Notes = "", string ProductType = "", string DocumentSet = "", string WorkflowName = "", string WorkflowRevision = "", string BOMName = "", string BOMRevision = "", string ProductFamily = "", string Procurement = "", string StartUOM = "", double StartQty = 0, bool IgnoreException = true)

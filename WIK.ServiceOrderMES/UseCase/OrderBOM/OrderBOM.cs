@@ -8,7 +8,7 @@ namespace WIK.ServiceOrderMES.UseCase
 {
     public interface IOrderBOM : Abstraction.IUseCase
     {
-        new void MainLogic(string delimiter, string path);
+        new Task MainLogic(string delimiter, string path);
     }
     public class OrderBOM : IOrderBOM
     {
@@ -22,9 +22,9 @@ namespace WIK.ServiceOrderMES.UseCase
             _repositoryMaintenanceTxn = repositoryMaintenanceTxn;
         }
 
-        public void MainLogic(string delimiter, string path)
+        public async Task MainLogic(string delimiter, string path)
         {
-
+            Console.WriteLine("Main Logic Order BOM");
         }
     }
 }

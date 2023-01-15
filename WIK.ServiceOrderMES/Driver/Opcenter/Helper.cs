@@ -207,23 +207,5 @@ namespace WIK.ServiceOrderMES.Driver.Opcenter
             }
             return oDataPointSummary;
         }
-        public bool IsDate(string input)
-        {
-            if (!string.IsNullOrEmpty(input))
-            {
-                DateTime dt;
-                return (DateTime.TryParse(input, out dt));
-            }
-            else
-            {
-                return false;
-            }
-        }
-        public bool CanCovertTo(string testString, string testType)
-        {
-            Type type = Type.GetType(testType, null, null);
-            TypeConverter converter = TypeDescriptor.GetConverter(type);
-            return converter.IsValid(testString);
-        }
     }
 }

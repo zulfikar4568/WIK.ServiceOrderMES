@@ -10,7 +10,7 @@ namespace WIK.ServiceOrderMES.Util
 {
     public class NetworkUNC
     {
-        public static void Connect()
+        public void Connect()
         {
             if (AppSettings.UNCPathUsername != "" && AppSettings.UNCPathPassword != "")
             {
@@ -22,7 +22,7 @@ namespace WIK.ServiceOrderMES.Util
                 if (!Directory.Exists(AppSettings.OrderBOMFolder)) Directory.CreateDirectory(AppSettings.OrderBOMFolder);
             }
         }
-        public static void Disconnect()
+        public void Disconnect()
         {
             if (AppSettings.OrderFolder != "" || AppSettings.OrderBOMFolder != "")
             {
