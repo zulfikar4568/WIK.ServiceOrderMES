@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using WIK.ServiceOrderMES.Config;
 using WIK.ServiceOrderMES.Util;
@@ -62,7 +63,7 @@ namespace WIK.ServiceOrderMES.UseCase
                     // Save Order Status
                     if (orderStatusInfo.Status != "")
                     {
-                        if (await _repositoryCached.GetString(orderStatusInfo.Status) == "")
+                        if (await _repositoryCached.GetString(orderStatusInfo.Status) is null)
                         {
                             if (_repositoryMaintenanceTxn.SaveOrderStatus(orderStatusInfo.Status, isOrderStateEnum.Open)) await _repositoryCached.SaveString(orderStatusInfo.Status, TimeSpan.FromDays(AppSettings.CachedExpirationInDay));
                         }
@@ -71,7 +72,7 @@ namespace WIK.ServiceOrderMES.UseCase
                     // Save Order type
                     if (OrderType != "")
                     {
-                        if (await _repositoryCached.GetString(OrderType) == "")
+                        if (await _repositoryCached.GetString(OrderType) is null)
                         {
                             if (_repositoryMaintenanceTxn.SaveOrderType(OrderType)) await _repositoryCached.SaveString(OrderType, TimeSpan.FromDays(AppSettings.CachedExpirationInDay));
                         }
@@ -80,7 +81,7 @@ namespace WIK.ServiceOrderMES.UseCase
                     // Save Work Center
                     if (order.WorkCenter != "")
                     {
-                        if (await _repositoryCached.GetString(order.WorkCenter) == "")
+                        if (await _repositoryCached.GetString(order.WorkCenter) is null)
                         {
                             if (_repositoryMaintenanceTxn.SaveMfgLine(order.WorkCenter)) await _repositoryCached.SaveString(order.WorkCenter, TimeSpan.FromDays(AppSettings.CachedExpirationInDay));
                         }
@@ -91,7 +92,7 @@ namespace WIK.ServiceOrderMES.UseCase
 
                     if (order.Material != "")
                     {
-                        if (await _repositoryCached.GetString(order.Material) == "")
+                        if (await _repositoryCached.GetString(order.Material) is null)
                         {
                             if (_repositoryMaintenanceTxn.ProductExists(order.Material))
                             {
@@ -109,10 +110,10 @@ namespace WIK.ServiceOrderMES.UseCase
 
                     if (order.ProductionOrder != "")
                     {
-                        Console.WriteLine($"{order.WorkCenter} - {order.ProductionOrder} - {order.Material} - {number} - {order.StartTime} - {order.EndTime} - {orderStatusInfo.Status} - {OrderType}");
                         Entity.Order orderFromCached = await _repositoryCached.GetOrder(order.ProductionOrder);
-                        if (orderFromCached != order)
+                        if (JsonSerializer.Serialize(orderFromCached) != JsonSerializer.Serialize(order))
                         {
+                            Console.WriteLine($"{order.WorkCenter} - {order.ProductionOrder} - {order.Material} - {number} - {order.StartTime} - {order.EndTime} - {orderStatusInfo.Status} - {OrderType}");
                             bool result = _repositoryMaintenanceTxn.SaveMfgOrder(
                                     order.ProductionOrder,
                                     "",
@@ -135,6 +136,9 @@ namespace WIK.ServiceOrderMES.UseCase
                             await _repositoryCached.SaveOrder(order.ProductionOrder, order, TimeSpan.FromDays(AppSettings.CachedExpirationInDay));
 
                             if (!result) throw new ArgumentException($"Something Wrong when import the Order! {order.ProductionOrder}");
+                        } else
+                        {
+                            Console.WriteLine($"{order.ProductionOrder} already exists in cached");
                         }
                     }
                 }
