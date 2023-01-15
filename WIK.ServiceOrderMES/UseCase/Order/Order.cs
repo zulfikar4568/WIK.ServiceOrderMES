@@ -14,10 +14,12 @@ namespace WIK.ServiceOrderMES.UseCase
     {
         private readonly Repository.IOrderCsv _repositoryCsv;
         private readonly Repository.IOrderCached _repositoryCached;
-        public Order(Repository.IOrderCsv repositoryCsv, Repository.IOrderCached repositoryCached)
+        private readonly Repository.MaintenanceTransaction _repositoryMaintenanceTxn;
+        public Order(Repository.IOrderCsv repositoryCsv, Repository.IOrderCached repositoryCached, Repository.MaintenanceTransaction repositoryMaintenanceTxn)
         {
             _repositoryCsv = repositoryCsv;
             _repositoryCached = repositoryCached;
+            _repositoryMaintenanceTxn = repositoryMaintenanceTxn;
         }
         public void MainLogic(string delimiter, string sourceFile)
         {

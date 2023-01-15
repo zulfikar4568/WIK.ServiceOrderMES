@@ -16,6 +16,8 @@ namespace WIK.ServiceOrderMES.Repository
 
             moduleBuilder.RegisterType<OrderCached>().As<IOrderCached>();
             moduleBuilder.RegisterType<OrderBOMCached>().As<IOrderBOMCached>();
+
+            moduleBuilder.RegisterType<MaintenanceTransaction>().AsSelf();
         }
     }
 }

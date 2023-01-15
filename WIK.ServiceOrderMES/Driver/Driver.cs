@@ -17,6 +17,9 @@ namespace WIK.ServiceOrderMES.Driver
 
             moduleBuilder.RegisterType<FileWatcher<UseCase.IOrder, FileWatcherInstance.OrderFileWatcherInstance>>().As<IFileWatcher<UseCase.IOrder, FileWatcherInstance.OrderFileWatcherInstance>>();
             moduleBuilder.RegisterType<FileWatcher<UseCase.IOrderBOM, FileWatcherInstance.OrderBOMFileWatcherInstance>>().As<IFileWatcher<UseCase.IOrderBOM, FileWatcherInstance.OrderBOMFileWatcherInstance>>();
+
+            moduleBuilder.RegisterType<Opcenter.Helper>().AsSelf();
+            moduleBuilder.RegisterType<Opcenter.MaintenanceTransaction>().AsSelf();
         }
     }
 }

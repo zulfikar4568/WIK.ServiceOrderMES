@@ -36,8 +36,23 @@
     <Reference Include="Autofac, Version=6.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.6.5.0\lib\netstandard2.0\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Camstar.Exceptions">
+      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\Camstar.Exceptions.dll</HintPath>
+    </Reference>
+    <Reference Include="Camstar.Util">
+      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\Camstar.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Camstar.WCFClient">
+      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\Camstar.WCFClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Camstar.WCFClientBase">
+      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\Camstar.WCFClientBase.dll</HintPath>
+    </Reference>
     <Reference Include="CsvHelper, Version=30.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.30.0.1\lib\net47\CsvHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="InSiteXMLClient">
+      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\InSiteXMLClient.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -118,10 +133,13 @@
     <Compile Include="Driver\FileWatcherInstance\OrderFileWatcherInstance.cs" />
     <Compile Include="Driver\FileWatcher\FileWatcher.cs" />
     <Compile Include="Driver\FileWatcherInstance\OrderBOMFileWatcherInstance.cs" />
+    <Compile Include="Driver\Opcenter\Helper.cs" />
+    <Compile Include="Driver\Opcenter\MaintenanceTransaction.cs" />
     <Compile Include="Entity\Order.cs" />
     <Compile Include="Entity\OrderBOM.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Opcenter\MaintenanceTransaction.cs" />
     <Compile Include="Repository\OrderBOM\OrderBOMCached.cs" />
     <Compile Include="Repository\OrderBOM\OrderBOMCsv.cs" />
     <Compile Include="Repository\Order\OrderCached.cs" />
@@ -143,6 +161,9 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="App.config" />
+    <None Include="Endpoints.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
