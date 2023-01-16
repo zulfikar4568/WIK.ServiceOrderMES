@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,8 +31,8 @@ namespace WIK.ServiceOrderMES.Repository
 
             try
             {
-
-                using (var reader = new StreamReader(sourceFile))
+                using (var fs = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (var reader = new StreamReader(fs, Encoding.Default))
                 using (var csv = new CsvReader(reader, configuration))
                 {
                     var records = csv.GetRecords<Entity.OrderBOM>();

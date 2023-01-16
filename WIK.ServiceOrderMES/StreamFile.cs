@@ -16,6 +16,9 @@ namespace WIK.ServiceOrderMES
         private readonly Driver.IFileWatcher<UseCase.IOrderBOM, Driver.FileWatcherInstance.OrderBOMFileWatcherInstance> _watcherOrderBOM;
         public StreamFile()
         {
+            ConnectionNetwork();
+
+            // Setup DI
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule(new Driver.Driver());
             containerBuilder.RegisterModule(new Repository.Repository());
@@ -37,6 +40,18 @@ namespace WIK.ServiceOrderMES
         {
             _watcherOrder.Exit();
             _watcherOrderBOM.Exit();
+        }
+
+        public void ConnectionNetwork()
+        {
+            try
+            {
+                NetworkUNC.Connect();
+            }
+            catch (Exception ex)
+            {
+                EventLogUtil.LogErrorEvent(AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source, ex);
+            }
         }
     }
 }
