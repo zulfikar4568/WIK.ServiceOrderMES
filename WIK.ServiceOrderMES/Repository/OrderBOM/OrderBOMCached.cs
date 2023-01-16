@@ -24,41 +24,10 @@ namespace WIK.ServiceOrderMES.Repository
         Task<bool> SaveWorkflow(string Workflow, WorkflowChanges Data, string WorkflowRevision = "", TimeSpan? ExpireTime = null, bool IgnoreException = true);
         Task<ProductChanges> GetProduct(string Product, string ProductRevision = "", bool IgnoreException = true);
         Task<bool> SaveProduct(string Product, ProductChanges Data, string ProductRevision = "", TimeSpan? ExpireTime = null, bool IgnoreException = true);
-        Task<T> GetExists<T>(string Name, string Revision = "", bool IgnoreException = true);
-        Task<bool> SaveExists<T>(string Name, T Data, string Revision = "", TimeSpan? ExpireTime = null, bool IgnoreException = true);
 
     }
     public class OrderBOMCached : IOrderBOMCached
     {
-        public async Task<T> GetExists<T>(string Name, string Revision = "", bool IgnoreException = true)
-        {
-            try
-            {
-                return await Redis.GetRecordAsync<T>($"EXISTS{Name}{Revision}");
-            }
-            catch (Exception ex)
-            {
-                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
-                EventLogUtil.LogErrorEvent(ex.Source, ex);
-                if (!IgnoreException) throw ex;
-                return default;
-            }
-        }
-        public async Task<bool> SaveExists<T>(string Name, T Data, string Revision = "", TimeSpan? ExpireTime = null, bool IgnoreException = true)
-        {
-            try
-            {
-                await Redis.SetRecordAsync<T>($"EXISTS{Name}{Revision}", Data, ExpireTime);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
-                EventLogUtil.LogErrorEvent(ex.Source, ex);
-                if (!IgnoreException) throw ex;
-                return false;
-            }
-        }
         public async Task<ProductChanges> GetProduct(string Product, string ProductRevision = "", bool IgnoreException = true)
         {
             try

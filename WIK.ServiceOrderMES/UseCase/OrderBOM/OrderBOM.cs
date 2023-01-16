@@ -60,7 +60,7 @@ namespace WIK.ServiceOrderMES.UseCase
                     List<Entity.OrderBOM> bomInformations = await _repositoryCached.GetOrderBOMInfoPattern($"POBOM{mfgOrder.Name}*");
 
                     // Setting Up BOM
-                    List<dynamic> materialList = await BOMLogic(bomInformations, oERPRoute, mfgOrder);
+                    List<dynamic> materialList = BOMLogic(bomInformations, oERPRoute, mfgOrder);
                     bool resultMfgOrder = _repositoryMaintenanceTxn.SaveMfgOrder(mfgOrder.Name.ToString(), "", "", "", "", "", "", 0, materialList, oERPRoute.Name != null ? oERPRoute.Name.Value : "");
                     string msg = resultMfgOrder == true ? "Success" : "Failed";
                     Console.WriteLine($"{mfgOrder.Name} result: {msg}");
@@ -73,7 +73,7 @@ namespace WIK.ServiceOrderMES.UseCase
             }
         }
 
-        public async Task<List<dynamic>> BOMLogic(List<Entity.OrderBOM> orderBOMs, ERPRouteChanges oERPRoute, MfgOrderChanges mfgOrder)
+        public List<dynamic> BOMLogic(List<Entity.OrderBOM> orderBOMs, ERPRouteChanges oERPRoute, MfgOrderChanges mfgOrder)
         {
             List<dynamic> MaterialList = new List<dynamic>();
             foreach (var item in orderBOMs)
@@ -124,20 +124,6 @@ namespace WIK.ServiceOrderMES.UseCase
                 }
             }
             return MaterialList;
-        }
-        public async Task<bool> ProductExistsFromCached(string ProductName, string ProductRevision = "")
-        {
-            if (await _repositoryCached.GetExists<bool>(ProductName, ProductRevision) == false)
-            {
-                bool productExists = _repositoryMaintenanceTxn.ProductExists(ProductName, ProductRevision);
-                await _repositoryCached.SaveExists<bool>(ProductName, productExists, ProductRevision, TimeSpan.FromHours(1));
-                return productExists;
-            }
-            else
-            {
-                Console.WriteLine($"Product Exists From Cached {ProductName}");
-                return await _repositoryCached.GetExists<bool>(ProductName, ProductRevision);
-            }
         }
         public async Task<ProductChanges> GetProductFromCached(string ProductName, string ProductRevision = "")
         {
