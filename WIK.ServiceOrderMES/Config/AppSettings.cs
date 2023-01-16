@@ -154,11 +154,11 @@ namespace WIK.ServiceOrderMES.Config
                 return ConfigurationManager.AppSettings["CachedHost"];
             }
         }
-        public static int CachedExpirationInDay
+        public static int CachedExpiration
         {
             get
             {
-                return Convert.ToInt32(ConfigurationManager.AppSettings["CachedExpirationInDay"]);
+                return Convert.ToInt32(ConfigurationManager.AppSettings["CachedExpiration"]);
             }
         }
         #endregion

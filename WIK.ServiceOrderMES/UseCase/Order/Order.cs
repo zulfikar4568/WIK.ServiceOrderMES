@@ -64,7 +64,7 @@ namespace WIK.ServiceOrderMES.UseCase
                     {
                         if (await _repositoryCached.GetString(orderStatusInfo.Status) is null)
                         {
-                            if (_repositoryMaintenanceTxn.SaveOrderStatus(orderStatusInfo.Status, isOrderStateEnum.Open)) await _repositoryCached.SaveString(orderStatusInfo.Status, TimeSpan.FromDays(AppSettings.CachedExpirationInDay));
+                            if (_repositoryMaintenanceTxn.SaveOrderStatus(orderStatusInfo.Status, isOrderStateEnum.Open)) await _repositoryCached.SaveString(orderStatusInfo.Status, TimeSpan.FromHours(AppSettings.CachedExpiration));
                         }
                     }
 
@@ -73,7 +73,7 @@ namespace WIK.ServiceOrderMES.UseCase
                     {
                         if (await _repositoryCached.GetString(OrderType) is null)
                         {
-                            if (_repositoryMaintenanceTxn.SaveOrderType(OrderType)) await _repositoryCached.SaveString(OrderType, TimeSpan.FromDays(AppSettings.CachedExpirationInDay));
+                            if (_repositoryMaintenanceTxn.SaveOrderType(OrderType)) await _repositoryCached.SaveString(OrderType, TimeSpan.FromHours(AppSettings.CachedExpiration));
                         }
                     }
 
@@ -82,7 +82,7 @@ namespace WIK.ServiceOrderMES.UseCase
                     {
                         if (await _repositoryCached.GetString(order.WorkCenter) is null)
                         {
-                            if (_repositoryMaintenanceTxn.SaveMfgLine(order.WorkCenter)) await _repositoryCached.SaveString(order.WorkCenter, TimeSpan.FromDays(AppSettings.CachedExpirationInDay));
+                            if (_repositoryMaintenanceTxn.SaveMfgLine(order.WorkCenter)) await _repositoryCached.SaveString(order.WorkCenter, TimeSpan.FromHours(AppSettings.CachedExpiration));
                         }
                     } else
                     {
@@ -95,7 +95,7 @@ namespace WIK.ServiceOrderMES.UseCase
                         {
                             if (_repositoryMaintenanceTxn.ProductExists(order.Material))
                             {
-                                await _repositoryCached.SaveString(order.Material, TimeSpan.FromDays(AppSettings.CachedExpirationInDay));
+                                await _repositoryCached.SaveString(order.Material, TimeSpan.FromHours(AppSettings.CachedExpiration));
                             } else
                             {
                                 EventLogUtil.LogEvent($"Material {order.Material} doesn't exists!", System.Diagnostics.EventLogEntryType.Warning, 3);
@@ -134,7 +134,7 @@ namespace WIK.ServiceOrderMES.UseCase
                                     order.WorkCenter);
 
                             // Save into Cached
-                            await _repositoryCached.SaveOrder(order.ProductionOrder, order, TimeSpan.FromDays(AppSettings.CachedExpirationInDay));
+                            await _repositoryCached.SaveOrder(order.ProductionOrder, order, TimeSpan.FromHours(AppSettings.CachedExpiration));
 
                             if (!result) throw new ArgumentException($"Something Wrong when import the Order! {order.ProductionOrder}");
                         } else

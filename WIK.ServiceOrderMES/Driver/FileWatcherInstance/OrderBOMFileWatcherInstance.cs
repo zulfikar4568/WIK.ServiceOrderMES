@@ -10,7 +10,7 @@ using WIK.ServiceOrderMES.Util;
 
 namespace WIK.ServiceOrderMES.Driver.FileWatcherInstance
 {
-    class OrderBOMFileWatcherInstance : BaseFileWatcherInstance
+    public class OrderBOMFileWatcherInstance : BaseFileWatcherInstance
     {
         public OrderBOMFileWatcherInstance()
         {

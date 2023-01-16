@@ -60,6 +60,9 @@
     <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.HashCode.1.0.0\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Pipelines.Sockets.Unofficial, Version=1.0.0.0, Culture=neutral, PublicKeyToken=42ea0a778e13fbe2, processorArchitecture=MSIL">
       <HintPath>..\packages\Pipelines.Sockets.Unofficial.2.2.2\lib\net472\Pipelines.Sockets.Unofficial.dll</HintPath>
     </Reference>
@@ -99,6 +102,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.7.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
@@ -124,6 +128,9 @@
     <Reference Include="Topshelf, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
       <HintPath>..\packages\Topshelf.4.3.0\lib\net452\Topshelf.dll</HintPath>
     </Reference>
+    <Reference Include="Topshelf.Autofac, Version=4.0.1.0, Culture=neutral, PublicKeyToken=ebfabbe7fb167e88, processorArchitecture=MSIL">
+      <HintPath>..\packages\Topshelf.Autofac.4.0.1\lib\net452\Topshelf.Autofac.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\AppSettings.cs" />
@@ -145,7 +152,7 @@
     <Compile Include="Repository\Order\OrderCached.cs" />
     <Compile Include="Repository\Order\OrderCsv.cs" />
     <Compile Include="Repository\Repository.cs" />
-    <Compile Include="StreamFile.cs" />
+    <Compile Include="ServiceMain.cs" />
     <Compile Include="UseCase\Abstraction\UseCase.cs" />
     <Compile Include="UseCase\OrderBOM\OrderBOM.cs" />
     <Compile Include="UseCase\Order\Order.cs" />
