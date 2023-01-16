@@ -207,54 +207,6 @@ namespace WIK.ServiceOrderMES.Repository
         {
             return _maintenanceTxn.MfgOrderInfo(IgnoreException);
         }
-        public ERPRouteChanges GetERPRouteFromMfgOrder(MfgOrderChanges oMfgOrder, bool IgnoreException = true)
-        {
-            try
-            {
-                if (oMfgOrder != null)
-                {
-                    if (oMfgOrder.Product != null)
-                    {
-                        ProductChanges oProduct = GetProduct(oMfgOrder.Product.Name);
-                        if (oProduct.Workflow != null)
-                        {
-                            WorkflowChanges oWorkflow = GetWorkflow(oProduct.Workflow.Name);
-                            if (oWorkflow.ERPRoute != null)
-                            {
-                                ERPRouteChanges oERPRoute = GetERPRoute(oWorkflow.ERPRoute.Name);
-                                return oERPRoute;
-                            }
-                            else
-                            {
-                                EventLogUtil.LogEvent($"(Trying to get ERP Route from Mfg/Production Order): Manufacturing Order doesn't have a ERP Route because, Workflow: {oWorkflow.Name.Value} doesn't have a ERP Route", System.Diagnostics.EventLogEntryType.Warning, 3);
-                                return null;
-                            }
-                        }
-                        else
-                        {
-                            EventLogUtil.LogEvent($"(Trying to get ERP Route from Mfg/Production Order): Manufacturing Order doesn't have a ERP Route because, Product : {oProduct.Name.Value} doesn't have a workflow!", System.Diagnostics.EventLogEntryType.Warning, 3);
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        EventLogUtil.LogEvent($"(Trying to get ERP Route from Mfg/Production Order): Manufacturing Order doesn't have a ERP Route because, Production or Manufacturing Order: {oMfgOrder.Name.Value} doesn't have a product!", System.Diagnostics.EventLogEntryType.Warning, 3);
-                        return null;
-                    }
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
-                EventLogUtil.LogErrorEvent(ex.Source, ex);
-                if (!IgnoreException) throw ex;
-                return null;
-            }
-        }
         public ERPRouteChanges GetERPRoute(string ERPRouteName, string ERPRouteRevision = "", bool IgnoreException = true)
         {
             RevisionedObjectRef objectToChange = new RevisionedObjectRef(ERPRouteName);

@@ -186,5 +186,43 @@ namespace WIK.ServiceOrderMES.Config
             }
         }
         #endregion
+
+        #region ORDER BOM CONFIG
+        public static string[] PPAFilter
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["PPAFilter"].Split(',');
+            }
+        }
+        public static string ScanningFilter
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["ScanningFilter"];
+            }
+        }
+        public static string DefaultProductType
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["DefaultProductType"];
+            }
+        }
+        public static string DefaultOperationNumber
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["DefaultOperationNumber"];
+            }
+        }
+        public static string DefaultProductDesc
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["DefaultProductDesc"];
+            }
+        }
+        #endregion
     }
 }

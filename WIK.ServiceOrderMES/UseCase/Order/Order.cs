@@ -34,7 +34,6 @@ namespace WIK.ServiceOrderMES.UseCase
         }
         public async Task MainLogic(string delimiter, string sourceFile)
         {
-            Console.WriteLine("Main Logic Order");
             List<Entity.Order> orders = _repositoryCsv.Reading(delimiter, sourceFile);
             foreach (var order in orders)
             {
