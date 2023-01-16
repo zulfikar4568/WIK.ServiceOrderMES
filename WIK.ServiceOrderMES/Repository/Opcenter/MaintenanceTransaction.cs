@@ -3,6 +3,7 @@ using Camstar.WCF.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WIK.ServiceOrderMES.Config;
@@ -18,6 +19,11 @@ namespace WIK.ServiceOrderMES.Repository
         {
             _maintenanceTxn = maintenanceTxn;
             _helper = helper;
+        }
+        public bool ProductTypeExists(string ProductTypeName)
+        {
+            ProductTypeMaintService oServiceProduct = new ProductTypeMaintService(AppSettings.ExCoreUserProfile);
+            return _helper.ObjectExists(oServiceProduct, new ProductTypeMaint(), ProductTypeName);
         }
         public bool ProductExists(string ProductName, string ProductRevision = "")
         {
@@ -200,6 +206,110 @@ namespace WIK.ServiceOrderMES.Repository
         public NamedObjectRef[] ListMfgOrderInfo(bool IgnoreException = true)
         {
             return _maintenanceTxn.MfgOrderInfo(IgnoreException);
+        }
+        public ERPRouteChanges GetERPRouteFromMfgOrder(MfgOrderChanges oMfgOrder, bool IgnoreException = true)
+        {
+            try
+            {
+                if (oMfgOrder != null)
+                {
+                    if (oMfgOrder.Product != null)
+                    {
+                        ProductChanges oProduct = GetProduct(oMfgOrder.Product.Name);
+                        if (oProduct.Workflow != null)
+                        {
+                            WorkflowChanges oWorkflow = GetWorkflow(oProduct.Workflow.Name);
+                            if (oWorkflow.ERPRoute != null)
+                            {
+                                ERPRouteChanges oERPRoute = GetERPRoute(oWorkflow.ERPRoute.Name);
+                                return oERPRoute;
+                            }
+                            else
+                            {
+                                EventLogUtil.LogEvent($"(Trying to get ERP Route from Mfg/Production Order): Manufacturing Order doesn't have a ERP Route because, Workflow: {oWorkflow.Name.Value} doesn't have a ERP Route", System.Diagnostics.EventLogEntryType.Warning, 3);
+                                return null;
+                            }
+                        }
+                        else
+                        {
+                            EventLogUtil.LogEvent($"(Trying to get ERP Route from Mfg/Production Order): Manufacturing Order doesn't have a ERP Route because, Product : {oProduct.Name.Value} doesn't have a workflow!", System.Diagnostics.EventLogEntryType.Warning, 3);
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        EventLogUtil.LogEvent($"(Trying to get ERP Route from Mfg/Production Order): Manufacturing Order doesn't have a ERP Route because, Production or Manufacturing Order: {oMfgOrder.Name.Value} doesn't have a product!", System.Diagnostics.EventLogEntryType.Warning, 3);
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
+                EventLogUtil.LogErrorEvent(ex.Source, ex);
+                if (!IgnoreException) throw ex;
+                return null;
+            }
+        }
+        public ERPRouteChanges GetERPRoute(string ERPRouteName, string ERPRouteRevision = "", bool IgnoreException = true)
+        {
+            RevisionedObjectRef objectToChange = new RevisionedObjectRef(ERPRouteName);
+            if (ERPRouteName != "" && ERPRouteRevision != "")
+            {
+                objectToChange = new RevisionedObjectRef(ERPRouteName, ERPRouteRevision);
+            }
+            ERPRouteChanges_Info erpRouteInfo = new ERPRouteChanges_Info();
+            erpRouteInfo.Name = new Info(true);
+            erpRouteInfo.Description = new Info(true);
+            erpRouteInfo.RouteStepItem = new Info(true);
+            RouteStepChanges_Info routeStepChanges_Info = new RouteStepChanges_Info();
+            routeStepChanges_Info.Name = new Info(true);
+            routeStepChanges_Info.ERPOperation = new Info(true);
+            routeStepChanges_Info.Sequence = new Info(true);
+            erpRouteInfo.RouteSteps = routeStepChanges_Info;
+            erpRouteInfo.Status = new Info(true);
+            return _maintenanceTxn.ERPRouteInfo(objectToChange, erpRouteInfo, IgnoreException);
+        }
+        public WorkflowChanges GetWorkflow(string WorkflowName, string WorkflowRevision = "", bool IgnoreException = true)
+        {
+            RevisionedObjectRef objectToChange = new RevisionedObjectRef(WorkflowName);
+            if (WorkflowName != "" && WorkflowRevision != "")
+            {
+                objectToChange = new RevisionedObjectRef(WorkflowName, WorkflowRevision);
+            }
+            WorkflowChanges_Info workflowInfo = new WorkflowChanges_Info();
+            workflowInfo.Name = new Info(true);
+            workflowInfo.Description = new Info(true);
+            workflowInfo.ERPRoute = new Info(true);
+            workflowInfo.FirstStep = new Info(true);
+            StepChanges_Info stepChanges_Info = new StepChanges_Info();
+            stepChanges_Info.DefaultPath = new Info(true);
+            stepChanges_Info.Description = new Info(true);
+            stepChanges_Info.Description1 = new Info(true);
+            stepChanges_Info.Paths = new MovePathChanges_Info();
+            stepChanges_Info.Paths.ToStep = new Info(true);
+            stepChanges_Info.Paths.ReturnToStep = new Info(true);
+            stepChanges_Info.Paths.FromStep = new Info(true);
+            stepChanges_Info.Paths.IsDefaultPath = new Info(true);
+            stepChanges_Info.Paths.DisplayName = new Info(true);
+            stepChanges_Info.PathSelectors = new MovePathSelectorChanges_Info();
+            stepChanges_Info.PathSelectors.DisplayName = new Info(true);
+            stepChanges_Info.PathSelectors.Path = new Info(true);
+            stepChanges_Info.Name = new Info(true);
+            stepChanges_Info.RouteStep = new Info(true);
+            stepChanges_Info.ReworkPaths = new ReworkPathChanges_Info();
+            stepChanges_Info.ReworkPaths.Name = new Info(true);
+            stepChanges_Info.ReworkPathSelectors = new ReworkPathSelectorChanges_Info();
+            stepChanges_Info.ReworkPathSelectors.Path = new Info(true);
+            stepChanges_Info.ReworkPathSelectors.DisplayName = new Info(true);
+            workflowInfo.Steps = stepChanges_Info;
+            workflowInfo.Status = new Info(true);
+
+            return _maintenanceTxn.WorkflowInfo(objectToChange, workflowInfo, IgnoreException);
         }
     }
 }

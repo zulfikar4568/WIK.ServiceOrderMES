@@ -18,6 +18,81 @@ namespace WIK.ServiceOrderMES.Driver.Opcenter
         {
             _helper = helper;
         }
+
+        public WorkflowChanges WorkflowInfo(RevisionedObjectRef ObjectRevisionRef, WorkflowChanges_Info ObjectChanges, bool IgnoreException = true)
+        {
+            WorkflowMaintService oService = null;
+            try
+            {
+                oService = new WorkflowMaintService(AppSettings.ExCoreUserProfile);
+                WorkflowMaint oServiceObject = new WorkflowMaint();
+                oServiceObject.ObjectToChange = ObjectRevisionRef;
+                WorkflowMaint_Request oServiceRequest = new WorkflowMaint_Request();
+                oServiceRequest.Info = new WorkflowMaint_Info();
+                oServiceRequest.Info.ObjectChanges = ObjectChanges;
+
+                ResultStatus oResultStatus = oService.Load(oServiceObject, oServiceRequest, out WorkflowMaint_Result oServiceResult);
+
+                EventLogUtil.LogEvent(oResultStatus.Message, System.Diagnostics.EventLogEntryType.Information, 3);
+                if (oServiceResult.Value.ObjectChanges != null)
+                {
+                    return oServiceResult.Value.ObjectChanges;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
+                EventLogUtil.LogErrorEvent(ex.Source, ex);
+                if (!IgnoreException) throw ex;
+                return null;
+            }
+            finally
+            {
+                if (!(oService is null)) oService.Close();
+            }
+        }
+        public ERPRouteChanges ERPRouteInfo(RevisionedObjectRef ObjectRevisionRef, ERPRouteChanges_Info ObjectChanges, bool IgnoreException = true)
+        {
+            ERPRouteMaintService oService = null;
+            try
+            {
+                oService = new ERPRouteMaintService(AppSettings.ExCoreUserProfile);
+                ERPRouteMaint oServiceObject = new ERPRouteMaint();
+                oServiceObject.ObjectToChange = ObjectRevisionRef;
+
+                ERPRouteMaint_Request oServiceRequest = new ERPRouteMaint_Request();
+                oServiceRequest.Info = new ERPRouteMaint_Info();
+                oServiceRequest.Info.ObjectChanges = ObjectChanges;
+
+                ERPRouteMaint_Result oServiceResult = null;
+                ResultStatus oResultStatus = oService.Load(oServiceObject, oServiceRequest, out oServiceResult);
+
+                EventLogUtil.LogEvent(oResultStatus.Message, System.Diagnostics.EventLogEntryType.Information, 3);
+                if (oServiceResult.Value.ObjectChanges != null)
+                {
+                    return oServiceResult.Value.ObjectChanges;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
+                EventLogUtil.LogErrorEvent(ex.Source, ex);
+                if (!IgnoreException) throw ex;
+                return null;
+            }
+            finally
+            {
+                if (!(oService is null)) oService.Close();
+            }
+        }
         public ProductChanges ProductInfo(RevisionedObjectRef ObjectRevisionRef , ProductChanges_Info ObjectChanges, bool IgnoreException = true)
         {
             ProductMaintService oService = null;
