@@ -112,7 +112,9 @@ namespace WIK.ServiceOrderMES.UseCase
                         Entity.Order orderFromCached = await _repositoryCached.GetOrder(order.ProductionOrder);
                         if (JsonSerializer.Serialize(orderFromCached) != JsonSerializer.Serialize(order))
                         {
-                            Console.WriteLine($"{order.WorkCenter} - {order.ProductionOrder} - {order.Material} - {number} - {order.StartTime} - {order.EndTime} - {orderStatusInfo.Status} - {OrderType}");
+                            #if DEBUG
+                                Console.WriteLine($"{order.WorkCenter} - {order.ProductionOrder} - {order.Material} - {number} - {order.StartTime} - {order.EndTime} - {orderStatusInfo.Status} - {OrderType}");
+                            #endif
                             bool result = _repositoryMaintenanceTxn.SaveMfgOrder(
                                     order.ProductionOrder,
                                     "",
@@ -137,7 +139,9 @@ namespace WIK.ServiceOrderMES.UseCase
                             if (!result) throw new ArgumentException($"Something Wrong when import the Order! {order.ProductionOrder}");
                         } else
                         {
-                            Console.WriteLine($"{order.ProductionOrder} already exists in cached");
+                            #if DEBUG
+                                Console.WriteLine($"{order.ProductionOrder} already exists in cached");
+                            #endif
                         }
                     }
                 }

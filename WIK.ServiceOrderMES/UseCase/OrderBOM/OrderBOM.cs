@@ -30,11 +30,15 @@ namespace WIK.ServiceOrderMES.UseCase
         public async Task MainLogic(string delimiter, string path)
         {
             List<Entity.OrderBOM> orderBOMs = _repositoryCsv.Reading(delimiter, path);
-            
-            Console.WriteLine("Doing Trim PO");
+
+            #if DEBUG
+                Console.WriteLine("Doing Trim PO");
+            #endif
             orderBOMs.ForEach(x => { x.ProductionOrder = x.ProductionOrder.TrimStart('0'); x.MaterialGroup = x.MaterialGroup.TrimStart('0'); });
 
-            Console.WriteLine("Doing Product Type");
+            #if DEBUG
+                Console.WriteLine("Doing Product Type");
+            #endif
             CreateDefaultProductType();
 
             string[] serverMfgOrderList = _repositoryMaintenanceTxn.ListMfgOrderInfo().Where(x => x != null).Select(x => x.Name.ToString()).ToArray();
@@ -62,8 +66,10 @@ namespace WIK.ServiceOrderMES.UseCase
                     // Setting Up BOM
                     List<dynamic> materialList = BOMLogic(bomInformations, oERPRoute, mfgOrder);
                     bool resultMfgOrder = _repositoryMaintenanceTxn.SaveMfgOrder(mfgOrder.Name.ToString(), "", "", "", "", "", "", 0, materialList, oERPRoute.Name != null ? oERPRoute.Name.Value : "");
-                    string msg = resultMfgOrder == true ? "Success" : "Failed";
-                    Console.WriteLine($"{mfgOrder.Name} result: {msg}");
+                    #if DEBUG
+                        string msg = resultMfgOrder == true ? "Success" : "Failed";
+                        Console.WriteLine($"{mfgOrder.Name} result: {msg}");
+                    #endif
                     if (!resultMfgOrder) throw new ArgumentException($"Something wrong when tried to update Manufacturing or Production Order: {mfgOrder.Name}.\nThe {mfgOrder.Name} data is the cause of error, try to remove this {mfgOrder.Name} data on order BOM list.");
                 }
             }
@@ -114,7 +120,9 @@ namespace WIK.ServiceOrderMES.UseCase
                         if (routeStep.Sequence.Value == operationNumber && routeStep.Name != null)
                         {
                             MaterialList.Add(new MfgOrderMaterialListItmChanges() { Product = new RevisionedObjectRef(item.Material), QtyRequired = number / mfgOrder.Qty.Value, IssueControl = IssueControlEnum.LotAndStockPoint, RouteStep = new NamedSubentityRef(routeStep.Name.Value), wikScanning = new Primitive<string>() { Value = item.Scanning } });
-                            Console.WriteLine($"{item.ProductionOrder} - {item.Material} - {item.MaterialGroup} - {item.Qty} - {item.Scanning}");
+                            #if DEBUG
+                                Console.WriteLine($"{item.ProductionOrder} - {item.Material} - {item.MaterialGroup} - {item.Qty} - {item.Scanning}");
+                            #endif
                         }
                     }
                 }
@@ -135,7 +143,9 @@ namespace WIK.ServiceOrderMES.UseCase
             }
             else
             {
-                Console.WriteLine($"Product From Cached {ProductName}");
+                #if DEBUG
+                    Console.WriteLine($"Product From Cached {ProductName}");
+                #endif
                 return await _repositoryCached.GetProduct(ProductName, ProductRevision);
             }
         }
@@ -149,7 +159,9 @@ namespace WIK.ServiceOrderMES.UseCase
             }
             else
             {
-                Console.WriteLine($"ERPRoute From Cached {ERPRouteName}");
+                #if DEBUG
+                    Console.WriteLine($"ERPRoute From Cached {ERPRouteName}");
+                #endif
                 return await _repositoryCached.GetERPRoute(ERPRouteName, ERPRouteRevision);
             }
         }
@@ -163,7 +175,9 @@ namespace WIK.ServiceOrderMES.UseCase
             }
             else
             {
-                Console.WriteLine($"Workflow From Cached {WorkflowName}");
+                #if DEBUG
+                    Console.WriteLine($"Workflow From Cached {WorkflowName}");
+                #endif
                 return await _repositoryCached.GetWorkflow(WorkflowName, WorkflowRevision);
             }
         }
