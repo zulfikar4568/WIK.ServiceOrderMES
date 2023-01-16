@@ -8,6 +8,6 @@ namespace WIK.ServiceOrderMES.UseCase.Abstraction
 {
     public interface IUseCase
     {
-        void MainLogic(string delimiter, string sourceFile);
+        Task MainLogic(string delimiter, string sourceFile);
     }
 }

@@ -12,11 +12,14 @@ namespace WIK.ServiceOrderMES.Driver
     {
         protected override void Load(ContainerBuilder moduleBuilder)
         {
-            moduleBuilder.RegisterInstance(new FileWatcherInstance.OrderFileWatcherInstance(AppSettings.OrderFolder)).As<FileWatcherInstance.OrderFileWatcherInstance>();
-            moduleBuilder.RegisterInstance(new FileWatcherInstance.OrderBOMFileWatcherInstance(AppSettings.OrderBOMFolder)).As<FileWatcherInstance.OrderBOMFileWatcherInstance>();
+            moduleBuilder.RegisterType<FileWatcherInstance.OrderFileWatcherInstance>().AsSelf();
+            moduleBuilder.RegisterType<FileWatcherInstance.OrderBOMFileWatcherInstance>().AsSelf();
 
             moduleBuilder.RegisterType<FileWatcher<UseCase.IOrder, FileWatcherInstance.OrderFileWatcherInstance>>().As<IFileWatcher<UseCase.IOrder, FileWatcherInstance.OrderFileWatcherInstance>>();
             moduleBuilder.RegisterType<FileWatcher<UseCase.IOrderBOM, FileWatcherInstance.OrderBOMFileWatcherInstance>>().As<IFileWatcher<UseCase.IOrderBOM, FileWatcherInstance.OrderBOMFileWatcherInstance>>();
+
+            moduleBuilder.RegisterType<Opcenter.Helper>().AsSelf();
+            moduleBuilder.RegisterType<Opcenter.MaintenanceTransaction>().AsSelf();
         }
     }
 }

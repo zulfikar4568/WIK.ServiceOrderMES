@@ -8,7 +8,7 @@ using WIK.ServiceOrderMES.Config;
 
 namespace WIK.ServiceOrderMES.Util
 {
-    public class NetworkUNC
+    public static class NetworkUNC
     {
         public static void Connect()
         {

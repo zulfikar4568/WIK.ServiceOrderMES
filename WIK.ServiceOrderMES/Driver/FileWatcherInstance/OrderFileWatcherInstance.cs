@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WIK.ServiceOrderMES.Config;
+using WIK.ServiceOrderMES.Util;
 
 namespace WIK.ServiceOrderMES.Driver.FileWatcherInstance
 {
     class OrderFileWatcherInstance : BaseFileWatcherInstance
     {
-        public OrderFileWatcherInstance(string path)
+        public OrderFileWatcherInstance()
         {
-            Instance = new FileSystemWatcher(path);
-            Instance.Filter = AppSettings.OrderBOMFile;
+            Instance = new FileSystemWatcher(AppSettings.OrderFolder);
+            Instance.Filter = AppSettings.OrderFile;
         }
     }
 }

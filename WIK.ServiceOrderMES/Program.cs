@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Topshelf;
 using WIK.ServiceOrderMES.Config;
 using WIK.ServiceOrderMES.Util;
@@ -11,7 +12,7 @@ namespace WIK.ServiceOrderMES
         {
             var exitCode = HostFactory.Run(x =>
             {
-                AppSettings.AssemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                AppSettings.AssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
                 x.Service<StreamFile>(s =>
                 {
                     s.ConstructUsing(streamfile => new StreamFile());

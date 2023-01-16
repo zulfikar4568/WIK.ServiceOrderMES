@@ -11,8 +11,13 @@ namespace WIK.ServiceOrderMES.Repository
     {
         protected override void Load(ContainerBuilder moduleBuilder)
         {
-            moduleBuilder.RegisterType<Order>().As<IOrder>();
-            moduleBuilder.RegisterType<OrderBOM>().As<IOrderBOM>();
+            moduleBuilder.RegisterType<OrderCsv>().As<IOrderCsv>();
+            moduleBuilder.RegisterType<OrderBOMCsv>().As<IOrderBOMCsv>();
+
+            moduleBuilder.RegisterType<OrderCached>().As<IOrderCached>();
+            moduleBuilder.RegisterType<OrderBOMCached>().As<IOrderBOMCached>();
+
+            moduleBuilder.RegisterType<MaintenanceTransaction>().AsSelf();
         }
     }
 }
