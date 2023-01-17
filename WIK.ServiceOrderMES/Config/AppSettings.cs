@@ -13,12 +13,19 @@ namespace WIK.ServiceOrderMES.Config
     {
         public static string AssemblyName { get; set; }
 
-        #region TIME
-        public static ulong TimerPollingInterval
+        #region CRON EXPRESSION
+        public static string OrderCronExpression
         {
             get
             {
-                return Convert.ToUInt64(ConfigurationManager.AppSettings["TimerPollingInterval"]);
+                return ConfigurationManager.AppSettings["OrderCronExpression"];
+            }
+        }
+        public static string OrderBOMCronExpression
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OrderBOMCronExpression"];
             }
         }
         #endregion
