@@ -1,10 +1,16 @@
 ﻿using Autofac;
 using System;
+using System.Collections.Specialized;
 using System.Reflection;
 using Topshelf;
 using Topshelf.Autofac;
 using WIK.ServiceOrderMES.Config;
 using WIK.ServiceOrderMES.Util;
+using Autofac.Extras.Quartz;
+using Quartz;
+using System.Threading;
+using System.Threading.Tasks;
+using Quartz.Logging;
 
 namespace WIK.ServiceOrderMES
 {
@@ -18,14 +24,12 @@ namespace WIK.ServiceOrderMES
             ConnectionNetwork();
 
             // Setup DI
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterModule(new Driver.Driver());
-            containerBuilder.RegisterModule(new Repository.Repository());
-            containerBuilder.RegisterModule(new UseCase.UseCase());
-            containerBuilder.RegisterModule(new Util.Util());
-            containerBuilder.RegisterType<ServiceMain>();
-
+            var containerBuilder = DependendyInjectionBuilder(new ContainerBuilder());
             var container = containerBuilder.Build();
+
+            #if DEBUG
+                Console.WriteLine("Start TopSelf");
+            #endif
 
             var exitCode = HostFactory.Run(x =>
             {
@@ -52,6 +56,34 @@ namespace WIK.ServiceOrderMES
 
             int exitCodeValue = (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());
             Environment.ExitCode = exitCodeValue;
+        }
+
+        private static ContainerBuilder DependendyInjectionBuilder(ContainerBuilder containerBuilder)
+        {
+            containerBuilder.RegisterModule(new Driver.Driver());
+            containerBuilder.RegisterModule(new Repository.Repository());
+            containerBuilder.RegisterModule(new UseCase.UseCase());
+            containerBuilder.RegisterModule(new Util.Util());
+            containerBuilder.RegisterType<ServiceMain>().As<ServiceMain>();
+
+            // configure and register Quartz
+            var schedulerConfig = new NameValueCollection {
+                { "quartz.scheduler.instanceName", "MyScheduler" },
+                { "quartz.jobStore.type", "Quartz.Simpl.RAMJobStore, Quartz" },
+                { "quartz.threadPool.threadCount", "3" }
+            };
+
+            // Log for Quartz
+            LogProvider.SetCurrentLogProvider(new Job.ConsoleLogProvider());
+
+            containerBuilder.RegisterModule(new QuartzAutofacFactoryModule
+            {
+                ConfigurationProvider = ctx => schedulerConfig
+            });
+
+            containerBuilder.RegisterModule(new QuartzAutofacJobsModule(typeof(Job.OrderJob).Assembly));
+            containerBuilder.RegisterModule(new QuartzAutofacJobsModule(typeof(Job.OrderBOMJob).Assembly));
+            return containerBuilder;
         }
 
         public static void ConnectionNetwork()
