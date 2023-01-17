@@ -16,7 +16,7 @@ namespace WIK.ServiceOrderMES
 {
     class Program
     {
-        static void Main(string[] _)
+        static async Task Main(string[] _)
         {
             AppSettings.AssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 
