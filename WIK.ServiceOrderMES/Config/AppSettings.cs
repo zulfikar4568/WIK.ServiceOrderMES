@@ -11,7 +11,13 @@ namespace WIK.ServiceOrderMES.Config
 {
     public static class AppSettings
     {
-        public static string AssemblyName { get; set; }
+        public static string AssemblyName
+        {
+            get
+            {
+                return System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+            }
+        }
 
         #region CRON EXPRESSION
         public static string OrderCronExpression

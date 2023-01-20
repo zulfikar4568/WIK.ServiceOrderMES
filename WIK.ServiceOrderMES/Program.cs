@@ -18,8 +18,6 @@ namespace WIK.ServiceOrderMES
     {
         static void Main(string[] _)
         {
-            AppSettings.AssemblyName = Assembly.GetExecutingAssembly().GetName().Name;
-
             // Setup Network
             ConnectionNetwork();
 
