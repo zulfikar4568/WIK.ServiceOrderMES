@@ -133,10 +133,16 @@ namespace WIK.ServiceOrderMES.UseCase
                                     OrderType,
                                     order.WorkCenter);
 
-                            // Save into Cached
-                            await _repositoryCached.SaveOrder(order.ProductionOrder, order, TimeSpan.FromHours(AppSettings.CachedExpiration));
-
-                            if (!result) throw new ArgumentException($"Something Wrong when import the Order! {order.ProductionOrder}");
+                            if (!result)
+                            {
+                                // Save as a Fail Transaction in cached
+                                // If Transaction Fail, it must be executed later
+                                await _repositoryCached.SaveOrder($"FAIL_ORDER{order.ProductionOrder}", order, TimeSpan.FromHours(AppSettings.CachedExpiration));
+                            } else
+                            {
+                                // Save into Cached
+                                await _repositoryCached.SaveOrder(order.ProductionOrder, order, TimeSpan.FromHours(AppSettings.CachedExpiration));
+                            }
                         } else
                         {
                             #if DEBUG

@@ -58,19 +58,29 @@ namespace WIK.ServiceOrderMES.UseCase
                     if (oERPRoute == null) continue;
                     if (mfgOrder.Qty == null && mfgOrder.Containers != null)
                     {
-                        EventLogUtil.LogEvent($"Production or Manufacturing Order: {mfgOrder.Name} can't be used, it might be Production Order have a Container or doesn't have Qty!.\nTry to remove this {mfgOrder.Name} data on material list.", System.Diagnostics.EventLogEntryType.Warning, 3);
+                        EventLogUtil.LogEvent($"Production or Manufacturing Order: {mfgOrder.Name} can't be used, it might be Production Order have a Container or doesn't have Qty!.\nTry to remove this {mfgOrder.Name} data on material list file.", System.Diagnostics.EventLogEntryType.Warning, 3);
                         continue;
                     }
                     List<Entity.OrderBOM> bomInformations = await _repositoryCached.GetOrderBOMInfoPattern($"POBOM{mfgOrder.Name}*");
 
                     // Setting Up BOM
                     List<dynamic> materialList = BOMLogic(bomInformations, oERPRoute, mfgOrder);
-                    bool resultMfgOrder = _repositoryMaintenanceTxn.SaveMfgOrder(mfgOrder.Name.ToString(), "", "", "", "", "", "", 0, materialList, oERPRoute.Name != null ? oERPRoute.Name.Value : "");
+
+                    //Create Object to be saved
+                    Entity.OrderBOMSaved dataToBeSaved = new Entity.OrderBOMSaved() { MfgOrderName = mfgOrder.Name.ToString(), ERPRouteName = oERPRoute.Name != null ? oERPRoute.Name.Value : "" , MaterialList = materialList};
+                    
+                    // Transaction MES
+                    bool resultMfgOrder = _repositoryMaintenanceTxn.SaveMfgOrder(dataToBeSaved.MfgOrderName, "", "", "", "", "", "", 0, dataToBeSaved.MaterialList, dataToBeSaved.ERPRouteName);
                     #if DEBUG
                         string msg = resultMfgOrder == true ? "Success" : "Failed";
                         Console.WriteLine($"{mfgOrder.Name} result: {msg}");
                     #endif
-                    if (!resultMfgOrder) throw new ArgumentException($"Something wrong when tried to update Manufacturing or Production Order: {mfgOrder.Name}.\nThe {mfgOrder.Name} data is the cause of error, try to remove this {mfgOrder.Name} data on order BOM list.");
+
+                    // If Transaction Fail, it must be executed later
+                    if (!resultMfgOrder)
+                    {
+                        await _repositoryCached.SaveMfgOrderFail(dataToBeSaved.MfgOrderName, dataToBeSaved);
+                    }
                 }
             }
             catch (Exception ex)
@@ -233,7 +243,15 @@ namespace WIK.ServiceOrderMES.UseCase
         {
             foreach (var orderBOM in orderBOMs)
             {
-                if (await _repositoryCached.GetOrderBOM($"POBOM{orderBOM.ProductionOrder}{orderBOM.Material}") is null) await _repositoryCached.SaveOrderBOM($"POBOM{orderBOM.ProductionOrder}{orderBOM.Material}", orderBOM, TimeSpan.FromHours(1));
+                if (await _repositoryCached.GetOrderBOM($"POBOM{orderBOM.ProductionOrder}{orderBOM.Material}") is null)
+                {
+                    await _repositoryCached.SaveOrderBOM($"POBOM{orderBOM.ProductionOrder}{orderBOM.Material}", orderBOM, TimeSpan.FromHours(1));
+                } else
+                {
+                    #if DEBUG
+                        Console.WriteLine($"POBOM From Cached POBOM{orderBOM.ProductionOrder}{orderBOM.Material}");
+                    #endif
+                }
             }
         }
         public async Task<List<MfgOrderChanges>> FindMfgOrder(string[] MergeMfgOrders)

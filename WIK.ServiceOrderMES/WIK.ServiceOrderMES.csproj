@@ -153,6 +153,7 @@
     <Compile Include="Driver\Opcenter\MaintenanceTransaction.cs" />
     <Compile Include="Entity\Order.cs" />
     <Compile Include="Entity\OrderBOM.cs" />
+    <Compile Include="Entity\OrderBOMSaved.cs" />
     <Compile Include="Job\ConsoleLogProvider.cs" />
     <Compile Include="Job\OrderBOMJob.cs" />
     <Compile Include="Job\OrderJob.cs" />
