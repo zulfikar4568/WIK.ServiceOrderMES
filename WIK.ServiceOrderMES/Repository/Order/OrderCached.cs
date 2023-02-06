@@ -16,6 +16,7 @@ namespace WIK.ServiceOrderMES.Repository
         Task<bool> SaveOrder(string OrderID, Entity.Order Data, TimeSpan? ExpireTime = null, bool IgnoreException = true);
         Task<bool> SaveString(string StringData, TimeSpan? ExpireTime = null, bool IgnoreException = true);
         Task<string> GetString(string StringData, bool IgnoreException = true);
+        Task<Boolean> DeleteOrder(string OrderID, bool IgnoreException = true);
     }
     public class OrderCached : IOrderCached
     {
@@ -62,6 +63,21 @@ namespace WIK.ServiceOrderMES.Repository
                 EventLogUtil.LogErrorEvent(ex.Source, ex);
                 if (!IgnoreException) throw ex;
                 return null;
+            }
+        }
+        public async Task<Boolean> DeleteOrder(string OrderID, bool IgnoreException = true)
+        {
+            try
+            {
+                await Redis.DeleteRecordAsync(OrderID);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
+                EventLogUtil.LogErrorEvent(ex.Source, ex);
+                if (!IgnoreException) throw ex;
+                return false;
             }
         }
         public async Task<bool> SaveOrder(string OrderID, Entity.Order Data, TimeSpan? ExpireTime = null, bool IgnoreException = true)
