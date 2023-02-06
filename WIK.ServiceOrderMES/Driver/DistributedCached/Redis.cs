@@ -27,6 +27,21 @@ namespace WIK.ServiceOrderMES.Driver
             }
         }
 
+        public static async Task<Boolean> DeleteRecordAsync(string recordId)
+        {
+            try
+            {
+                await redis.GetDatabase().KeyDeleteAsync(recordId);
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
+                EventLogUtil.LogErrorEvent(ex.Source, ex);
+                return false;
+            }
+        }
+
         public static async Task<T> GetRecordAsync<T>(string recordId)
         {
             try
