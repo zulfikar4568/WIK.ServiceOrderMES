@@ -27,11 +27,25 @@ namespace WIK.ServiceOrderMES.Config
                 return ConfigurationManager.AppSettings["OrderCronExpression"];
             }
         }
+        public static string OrderFailedCronExpression
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OrderFailedCronExpression"];
+            }
+        }
         public static string OrderBOMCronExpression
         {
             get
             {
                 return ConfigurationManager.AppSettings["OrderBOMCronExpression"];
+            }
+        }
+        public static string OrderBOMFailedCronExpression
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["OrderBOMFailedCronExpression"];
             }
         }
         #endregion

@@ -52,7 +52,7 @@ namespace WIK.ServiceOrderMES.Repository
             objectChanges.Description = Description;
             return _maintenanceTxn.MfgLineTxn(objectChanges, IgnoreException);
         }
-        public bool SaveMfgOrder(string Name, string Description = "", string Notes = "", string ProductName = "", string ProductRevision = "", string WorkflowName = "", string WorkflowRevision = "", double Qty = 0, List<dynamic> MaterialList = null, string ERPRoute = "", string PlannedStartDate = "", string PlannedCompletedDate = "", string ReleaseDate = "", string OrderStatus = "", string OrderType = "", string MfgLine = "", bool AutoCreateQueue = false, bool IgnoreException = true)
+        public bool SaveMfgOrder(string Name, string Description = "", string Notes = "", string ProductName = "", string ProductRevision = "", string WorkflowName = "", string WorkflowRevision = "", double Qty = 0, List<MfgOrderMaterialListItmChanges> MaterialList = null, string ERPRoute = "", string PlannedStartDate = "", string PlannedCompletedDate = "", string ReleaseDate = "", string OrderStatus = "", string OrderType = "", string MfgLine = "", bool AutoCreateQueue = false, bool IgnoreException = true)
         {
             MfgOrderChanges objectChanges = new MfgOrderChanges();
             objectChanges.Name = new Primitive<string>() { Value = Name };

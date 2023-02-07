@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Camstar.WCF.ObjectStack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace WIK.ServiceOrderMES.Entity
     public class OrderBOMSaved
     {
         public string MfgOrderName { get; set; }
-        public dynamic MaterialList { get; set; }
+        public List<MfgOrderMaterialListItmChanges> MaterialList { get; set; }
         public string ERPRouteName { get; set; }
     }
 }

@@ -37,7 +37,10 @@ namespace WIK.ServiceOrderMES
         private void ScheduleJob()
         {
             SchedulerCronJob<Job.OrderJob>(AppSettings.OrderCronExpression);
+            SchedulerCronJob<Job.OrderFailedJob>(AppSettings.OrderFailedCronExpression);
+
             SchedulerCronJob<Job.OrderBOMJob>(AppSettings.OrderBOMCronExpression);
+            SchedulerCronJob<Job.OrderBOMFailedJob>(AppSettings.OrderBOMFailedCronExpression);
         }
 
         private void SchedulerCronJob<T>(string cronExpression) where T : IJob

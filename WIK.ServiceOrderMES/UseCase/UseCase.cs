@@ -12,7 +12,10 @@ namespace WIK.ServiceOrderMES.UseCase
         protected override void Load(ContainerBuilder moduleBuilder)
         {
             moduleBuilder.RegisterType<Order>().As<IOrder>();
+            moduleBuilder.RegisterType<OrderFailed>().As<IOrderFailed>();
+
             moduleBuilder.RegisterType<OrderBOM>().As<IOrderBOM>();
+            moduleBuilder.RegisterType<OrderBOMFailed>().As<IOrderBOMFailed>();
         }
     }
 }

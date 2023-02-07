@@ -110,35 +110,40 @@ namespace WIK.ServiceOrderMES.UseCase
                     if (order.ProductionOrder != "")
                     {
                         Entity.Order orderFromCached = await _repositoryCached.GetOrder(order.ProductionOrder);
+                        Entity.OrderSaved orderTobeSaved = new Entity.OrderSaved() { Order = order, Qty = number, OrderStatus = orderStatusInfo.Status, OrderType = OrderType };
                         if (JsonSerializer.Serialize(orderFromCached) != JsonSerializer.Serialize(order))
                         {
                             #if DEBUG
                                 Console.WriteLine($"{order.WorkCenter} - {order.ProductionOrder} - {order.Material} - {number} - {order.StartTime} - {order.EndTime} - {orderStatusInfo.Status} - {OrderType}");
                             #endif
                             bool result = _repositoryMaintenanceTxn.SaveMfgOrder(
-                                    order.ProductionOrder,
+                                    orderTobeSaved.Order.ProductionOrder,
                                     "",
                                     "",
-                                    order.Material,
+                                    orderTobeSaved.Order.Material,
                                     "",
                                     "",
                                     "",
-                                    number,
+                                    orderTobeSaved.Qty,
                                     null,
                                     "",
-                                    Formatting.IsDate(order.StartTime) == true ? order.StartTime : "",
-                                    Formatting.IsDate(order.EndTime) == true ? order.EndTime : "",
+                                    Formatting.IsDate(order.StartTime) == true ? orderTobeSaved.Order.StartTime : "",
+                                    Formatting.IsDate(order.EndTime) == true ? orderTobeSaved.Order.EndTime : "",
                                     "",
-                                    orderStatusInfo.Status,
-                                    OrderType,
+                                    orderTobeSaved.OrderStatus,
+                                    orderTobeSaved.OrderType,
                                     order.WorkCenter);
 
                             if (!result)
                             {
                                 // Save as a Fail Transaction in cached
                                 // If Transaction Fail, it must be executed later
-                                await _repositoryCached.SaveOrder($"FAIL_ORDER{order.ProductionOrder}", order, TimeSpan.FromHours(AppSettings.CachedExpiration));
-                            } else
+                                await _repositoryCached.SaveOrderFailed(order.ProductionOrder, orderTobeSaved , TimeSpan.FromDays(AppSettings.CachedExpiration));
+                                #if DEBUG
+                                    Console.WriteLine($"{order.ProductionOrder} failed when doing Txn MES");
+                                #endif
+                            }
+                            else
                             {
                                 // Save into Cached
                                 await _repositoryCached.SaveOrder(order.ProductionOrder, order, TimeSpan.FromHours(AppSettings.CachedExpiration));

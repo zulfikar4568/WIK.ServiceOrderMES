@@ -80,7 +80,9 @@ namespace WIK.ServiceOrderMES
             });
 
             containerBuilder.RegisterModule(new QuartzAutofacJobsModule(typeof(Job.OrderJob).Assembly));
+            containerBuilder.RegisterModule(new QuartzAutofacJobsModule(typeof(Job.OrderFailedJob).Assembly));
             containerBuilder.RegisterModule(new QuartzAutofacJobsModule(typeof(Job.OrderBOMJob).Assembly));
+            containerBuilder.RegisterModule(new QuartzAutofacJobsModule(typeof(Job.OrderBOMFailedJob).Assembly));
             return containerBuilder;
         }
 

@@ -26,6 +26,7 @@ namespace WIK.ServiceOrderMES.Repository
         Task<bool> SaveProduct(string Product, ProductChanges Data, string ProductRevision = "", TimeSpan? ExpireTime = null, bool IgnoreException = true);
         Task<List<Entity.OrderBOMSaved>> GetMfgOrderFailList(string pattern, bool IgnoreException = true);
         Task<bool> SaveMfgOrderFail(string ProductionOrder, Entity.OrderBOMSaved Data, TimeSpan? ExpireTime = null, bool IgnoreException = true);
+        Task<bool> DeleteMfgOrderFail(string OrderID, bool IgnoreException = true);
     }
     public class OrderBOMCached : IOrderBOMCached
     {
@@ -130,42 +131,6 @@ namespace WIK.ServiceOrderMES.Repository
                 return null;
             }
         }
-        public async Task<bool> SaveMfgOrderFail(string ProductionOrder, Entity.OrderBOMSaved Data, TimeSpan? ExpireTime = null, bool IgnoreException = true)
-        {
-            try
-            {
-                await Redis.SetRecordAsync<Entity.OrderBOMSaved>($"PO_FAIL{ProductionOrder}", Data, ExpireTime);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
-                EventLogUtil.LogErrorEvent(ex.Source, ex);
-                if (!IgnoreException) throw ex;
-                return false;
-            }
-        }
-        public async Task<List<Entity.OrderBOMSaved>> GetMfgOrderFailList(string pattern, bool IgnoreException = true)
-        {
-            List<Entity.OrderBOMSaved> dataFounded = new List<Entity.OrderBOMSaved>();
-            try
-            {
-                var dataKeys = await Redis.GetRecordKeysPattern(pattern);
-                foreach (var key in dataKeys)
-                {
-                    Entity.OrderBOMSaved searchData = await Redis.GetRecordAsync<Entity.OrderBOMSaved>(key);
-                    if (searchData != null) dataFounded.Add(searchData);
-                }
-                return dataFounded;
-            }
-            catch (Exception ex)
-            {
-                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
-                EventLogUtil.LogErrorEvent(ex.Source, ex);
-                if (!IgnoreException) throw ex;
-                return null;
-            }
-        }
         public async Task<bool> SaveMfgOrder(string ProductionOrder, MfgOrderChanges Data, TimeSpan? ExpireTime = null, bool IgnoreException = true)
         {
             try
@@ -231,6 +196,57 @@ namespace WIK.ServiceOrderMES.Repository
                 EventLogUtil.LogErrorEvent(ex.Source, ex);
                 if (!IgnoreException) throw ex;
                 return null;
+            }
+        }
+        public async Task<bool> SaveMfgOrderFail(string ProductionOrder, Entity.OrderBOMSaved Data, TimeSpan? ExpireTime = null, bool IgnoreException = true)
+        {
+            try
+            {
+                await Redis.SetRecordAsync<Entity.OrderBOMSaved>($"PO_FAIL_{ProductionOrder}", Data, ExpireTime);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
+                EventLogUtil.LogErrorEvent(ex.Source, ex);
+                if (!IgnoreException) throw ex;
+                return false;
+            }
+        }
+        public async Task<List<Entity.OrderBOMSaved>> GetMfgOrderFailList(string pattern, bool IgnoreException = true)
+        {
+            List<Entity.OrderBOMSaved> dataFounded = new List<Entity.OrderBOMSaved>();
+            try
+            {
+                var dataKeys = await Redis.GetRecordKeysPattern(pattern);
+                foreach (var key in dataKeys)
+                {
+                    Entity.OrderBOMSaved searchData = await Redis.GetRecordAsync<Entity.OrderBOMSaved>(key);
+                    if (searchData != null) dataFounded.Add(searchData);
+                }
+                return dataFounded;
+            }
+            catch (Exception ex)
+            {
+                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
+                EventLogUtil.LogErrorEvent(ex.Source, ex);
+                if (!IgnoreException) throw ex;
+                return null;
+            }
+        }
+        public async Task<bool> DeleteMfgOrderFail(string ProductionOrder, bool IgnoreException = true)
+        {
+            try
+            {
+                await Redis.DeleteRecordAsync($"PO_FAIL_{ProductionOrder}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ex.Source = AppSettings.AssemblyName == ex.Source ? MethodBase.GetCurrentMethod().Name : MethodBase.GetCurrentMethod().Name + "." + ex.Source;
+                EventLogUtil.LogErrorEvent(ex.Source, ex);
+                if (!IgnoreException) throw ex;
+                return false;
             }
         }
     }

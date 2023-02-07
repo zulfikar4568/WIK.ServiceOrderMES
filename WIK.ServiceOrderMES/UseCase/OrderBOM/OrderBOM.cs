@@ -64,7 +64,7 @@ namespace WIK.ServiceOrderMES.UseCase
                     List<Entity.OrderBOM> bomInformations = await _repositoryCached.GetOrderBOMInfoPattern($"POBOM{mfgOrder.Name}*");
 
                     // Setting Up BOM
-                    List<dynamic> materialList = BOMLogic(bomInformations, oERPRoute, mfgOrder);
+                    List<MfgOrderMaterialListItmChanges> materialList = BOMLogic(bomInformations, oERPRoute, mfgOrder);
 
                     //Create Object to be saved
                     Entity.OrderBOMSaved dataToBeSaved = new Entity.OrderBOMSaved() { MfgOrderName = mfgOrder.Name.ToString(), ERPRouteName = oERPRoute.Name != null ? oERPRoute.Name.Value : "" , MaterialList = materialList};
@@ -79,7 +79,10 @@ namespace WIK.ServiceOrderMES.UseCase
                     // If Transaction Fail, it must be executed later
                     if (!resultMfgOrder)
                     {
-                        await _repositoryCached.SaveMfgOrderFail(dataToBeSaved.MfgOrderName, dataToBeSaved);
+                        #if DEBUG
+                            Console.WriteLine($"{dataToBeSaved.MfgOrderName} BOM failed when doing Txn MES");
+                        #endif
+                        await _repositoryCached.SaveMfgOrderFail(dataToBeSaved.MfgOrderName, dataToBeSaved, TimeSpan.FromDays(AppSettings.CachedExpiration));
                     }
                 }
             }
@@ -89,9 +92,9 @@ namespace WIK.ServiceOrderMES.UseCase
             }
         }
 
-        public List<dynamic> BOMLogic(List<Entity.OrderBOM> orderBOMs, ERPRouteChanges oERPRoute, MfgOrderChanges mfgOrder)
+        public List<MfgOrderMaterialListItmChanges> BOMLogic(List<Entity.OrderBOM> orderBOMs, ERPRouteChanges oERPRoute, MfgOrderChanges mfgOrder)
         {
-            List<dynamic> MaterialList = new List<dynamic>();
+            List<MfgOrderMaterialListItmChanges> MaterialList = new List<MfgOrderMaterialListItmChanges>();
             foreach (var item in orderBOMs)
             {
                 //Console.WriteLine($"{item.ProductionOrder} - {item.Material} - {item.MaterialGroup} - {item.Qty} - {item.Scanning}");

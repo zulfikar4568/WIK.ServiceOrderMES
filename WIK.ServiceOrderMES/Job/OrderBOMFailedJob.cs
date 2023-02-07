@@ -1,21 +1,24 @@
 ﻿using Quartz;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using WIK.ServiceOrderMES.Config;
 
 namespace WIK.ServiceOrderMES.Job
 {
-    public class OrderJob : IJob
+    public class OrderBOMFailedJob : IJob
     {
-        private readonly UseCase.IOrder _usecase;
-        public OrderJob(UseCase.IOrder usecase)
+        private readonly UseCase.IOrderBOMFailed _usecase;
+        public OrderBOMFailedJob(UseCase.IOrderBOMFailed usecase)
         {
             _usecase = usecase ?? throw new ArgumentNullException(nameof(usecase));
         }
         async Task IJob.Execute(IJobExecutionContext context)
         {
             #if DEBUG
-                await Console.Out.WriteLineAsync($"Order Job Called! - ");
+                await Console.Out.WriteLineAsync("Order BOM Failed Job Called!");
             #endif
             await _usecase.MainLogic(";", $"{AppSettings.OrderFolder}\\{AppSettings.OrderFile}");
         }

@@ -154,8 +154,11 @@
     <Compile Include="Entity\Order.cs" />
     <Compile Include="Entity\OrderBOM.cs" />
     <Compile Include="Entity\OrderBOMSaved.cs" />
+    <Compile Include="Entity\OrderSaved.cs" />
     <Compile Include="Job\ConsoleLogProvider.cs" />
+    <Compile Include="Job\OrderBOMFailedJob.cs" />
     <Compile Include="Job\OrderBOMJob.cs" />
+    <Compile Include="Job\OrderFailedJob.cs" />
     <Compile Include="Job\OrderJob.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -168,7 +171,9 @@
     <Compile Include="ServiceMain.cs" />
     <Compile Include="UseCase\Abstraction\UseCase.cs" />
     <Compile Include="UseCase\OrderBOM\OrderBOM.cs" />
+    <Compile Include="UseCase\OrderBOM\OrderBOMFailed.cs" />
     <Compile Include="UseCase\Order\Order.cs" />
+    <Compile Include="UseCase\Order\OrderFailed.cs" />
     <Compile Include="UseCase\UseCase.cs" />
     <Compile Include="Util\EventLogUtil.cs" />
     <Compile Include="Util\Formatting.cs" />
