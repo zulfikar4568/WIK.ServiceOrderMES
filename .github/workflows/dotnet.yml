@@ -31,6 +31,6 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Restore or Install dependencies
-      run: dotnet restore WIK.ServiceOrderMES.sln
+      run: dotnet restore --source https://api.nuget.org/v3/index.json
     - name: Build
-      run: dotnet build --no-restore WIK.ServiceOrderMES.sln
+      run: dotnet build --no-restore --source https://api.nuget.org/v3/index.json
