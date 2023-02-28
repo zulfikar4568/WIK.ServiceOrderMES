@@ -8,9 +8,6 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-    
-env:
-  DOTNET_VERSION: '6.0.x' # The .NET SDK version to use
   
 jobs:
   build:
@@ -22,7 +19,7 @@ jobs:
     if: ${{ github.ref == 'refs/heads/master' }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [windows-latest, windows-2019]
 
     steps:
     - uses: actions/checkout@v3
@@ -31,9 +28,9 @@ jobs:
       uses: microsoft/setup-msbuild@v1
     
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.2
+      uses: NuGet/setup-nuget@v1.0.5
       
-    - name: Restore Nuget Package
+    - name: Restore Nuget Packages
       run: nuget restore WIK.ServiceOrderMES.sln
       
     - name: Build the Solution
