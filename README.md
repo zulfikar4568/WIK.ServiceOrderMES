@@ -1,4 +1,9 @@
-<h1 align="center">WIK Service Order Service</h1>
+<h1 align="center">
+  WIK Service Order Service </br>
+  <img src="https://github.com/zulfikar4568/WIK.ServiceOrderMES/actions/workflows/dotnet.yml/badge.svg" />
+  <a href="https://github.com/zulfikar4568/WIK.ServiceOrderMES/releases/latest"><img src="https://img.shields.io/github/release/zulfikar4568/WIK.ServiceOrderMES.svg" /></a>
+  <a href="https://github.com/zulfikar4568/WIK.ServiceOrderMES/blob/master/LICENSE"><img src="https://img.shields.io/github/license/zulfikar4568/WIK.ServiceOrderMES.svg" /></a>
+</h1>
 
 # Change the Config of the Application
 Edit the hosts in your `Endpoints.config`
