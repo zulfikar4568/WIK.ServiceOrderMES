@@ -26,11 +26,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
-    - name: Restore or Install dependencies
-      run: dotnet restore --source https://api.nuget.org/v3/index.json
-    - name: Build
-      run: dotnet build --no-restore --source https://api.nuget.org/v3/index.json
+    
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+    
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+      
+    - name: Restore Nuget Package
+      run: nuget restore WIK.ServiceOrderMES.sln
+      
+    - name: Build the Solution
+      run: msbuild WIK.ServiceOrderMES.sln /p:Configuration=Release
