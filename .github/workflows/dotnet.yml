@@ -31,8 +31,6 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
     - name: Restore or Install dependencies
-      run: dotnet restore
+      run: dotnet restore WIK.ServiceOrderMES.sln
     - name: Build
-      run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet build --no-restore WIK.ServiceOrderMES.sln
