@@ -39,23 +39,28 @@
     <Reference Include="Autofac.Extras.Quartz, Version=8.0.0.0, Culture=neutral, PublicKeyToken=595f708ada5feacc, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.Extras.Quartz.8.0.0\lib\netstandard2.0\Autofac.Extras.Quartz.dll</HintPath>
     </Reference>
-    <Reference Include="Camstar.Exceptions">
-      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\Camstar.Exceptions.dll</HintPath>
+    <Reference Include="Camstar.Exceptions, Version=8.3.7871.22572, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Camstar.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="Camstar.Util">
-      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\Camstar.Util.dll</HintPath>
+    <Reference Include="Camstar.Util, Version=8.3.7871.22572, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Camstar.Util.dll</HintPath>
     </Reference>
-    <Reference Include="Camstar.WCFClient">
-      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\Camstar.WCFClient.dll</HintPath>
+    <Reference Include="Camstar.WCFClient, Version=8.3.7871.22573, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Camstar.WCFClient.dll</HintPath>
     </Reference>
-    <Reference Include="Camstar.WCFClientBase">
-      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\Camstar.WCFClientBase.dll</HintPath>
+    <Reference Include="Camstar.WCFClientBase, Version=8.3.7871.22573, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\Camstar.WCFClientBase.dll</HintPath>
     </Reference>
     <Reference Include="CsvHelper, Version=30.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>..\packages\CsvHelper.30.0.1\lib\net47\CsvHelper.dll</HintPath>
     </Reference>
-    <Reference Include="InSiteXMLClient">
-      <HintPath>..\..\OpcenterWikLibrary\OpcenterWikLibrary\lib\InSiteXMLClient.dll</HintPath>
+    <Reference Include="InSiteXMLClient, Version=8.3.7871.22683, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\InSiteXMLClient.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=4242.42.42.42, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.2022.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
