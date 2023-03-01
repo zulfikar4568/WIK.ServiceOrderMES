@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.1.0"></a>
+## [1.1.0](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/releases/tag/v1.1.0) (2023-3-1)
+
+### Features
+
+* uninstaller ([7b406d4](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/commit/7b406d4bc9c90ffede14622d80e91d06ac4634d1))
+
 <a name="1.0.0"></a>
 ## [1.0.0](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/releases/tag/v1.0.0) (2023-2-28)
 
