@@ -122,7 +122,7 @@ namespace WIK.ServiceOrderMES.UseCase
                 if (!ObjectExists && item.MaterialGroup != "" && item.Material != "")
                 {
                     _repositoryMaintenanceTxn.SaveProductFamily(item.Material);
-                    _repositoryMaintenanceTxn.SaveProduct(item.Material, "1", "", AppSettings.DefaultProductDesc, "", AppSettings.DefaultProductType, "", "", "", "", "", item.MaterialGroup);
+                    _repositoryMaintenanceTxn.SaveProduct(item.Material, "1", "", item.MaterialDescription != "" ? item.MaterialDescription : AppSettings.DefaultProductDesc, "", AppSettings.DefaultProductType, "", "", "", "", "", item.MaterialGroup);
                 }
                 if (oERPRoute.RouteSteps != null)
                 {
@@ -134,7 +134,7 @@ namespace WIK.ServiceOrderMES.UseCase
                         {
                             MaterialList.Add(new MfgOrderMaterialListItmChanges() { Product = new RevisionedObjectRef(item.Material), QtyRequired = number / mfgOrder.Qty.Value, IssueControl = IssueControlEnum.LotAndStockPoint, RouteStep = new NamedSubentityRef(routeStep.Name.Value), wikScanning = new Primitive<string>() { Value = item.Scanning } });
                             #if DEBUG
-                                Console.WriteLine($"{item.ProductionOrder} - {item.Material} - {item.MaterialGroup} - {item.Qty} - {item.Scanning}");
+                                Console.WriteLine($"{item.ProductionOrder} - {item.Material} - {item.MaterialGroup} - {item.Qty} - {item.Scanning} - {item.MaterialDescription}");
                             #endif
                         }
                     }
