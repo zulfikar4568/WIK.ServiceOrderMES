@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.3.0"></a>
+## [1.3.0](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/releases/tag/v1.3.0) (2023-3-9)
+
+### Features
+
+* material description ([63f9531](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/commit/63f9531b3b82d5b0ec1876799d01e7534be6a903))
+
+### Other
+
+* Merge branch 'master' of https://github.com/zulfikar4568/WIK.ServiceOrderMES ([87062a2](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/commit/87062a2bffdbeb61274a60c3cef2006de663e2f8))
+
 <a name="1.2.0"></a>
 ## [1.2.0](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/releases/tag/v1.2.0) (2023-3-9)
 
