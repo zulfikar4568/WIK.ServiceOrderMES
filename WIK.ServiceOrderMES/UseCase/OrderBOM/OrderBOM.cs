@@ -122,7 +122,7 @@ namespace WIK.ServiceOrderMES.UseCase
                 if (!ObjectExists && item.MaterialGroup != "" && item.Material != "")
                 {
                     _repositoryMaintenanceTxn.SaveProductFamily(item.Material);
-                    _repositoryMaintenanceTxn.SaveProduct(item.Material, "1", "", AppSettings.DefaultProductDesc, "", AppSettings.DefaultProductType, "", "", "", "", "", item.MaterialGroup);
+                    _repositoryMaintenanceTxn.SaveProduct(item.Material, "1", "", item.MaterialDescription != "" ? item.MaterialDescription : AppSettings.DefaultProductDesc, "", AppSettings.DefaultProductType, "", "", "", "", "", item.MaterialGroup);
                 }
                 if (oERPRoute.RouteSteps != null)
                 {

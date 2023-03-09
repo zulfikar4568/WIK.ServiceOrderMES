@@ -20,5 +20,7 @@ namespace WIK.ServiceOrderMES.Entity
         public string MaterialGroup { get; set; }
         [Index(25)]
         public string Scanning { get; set; }
+        [Index(26)]
+        public string MaterialDescription { get; set; }
     }
 }
