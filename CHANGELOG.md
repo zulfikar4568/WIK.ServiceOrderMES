@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [versionize](https://github.com/versionize/versionize) for commit guidelines.
 
+<a name="1.2.0"></a>
+## [1.2.0](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/releases/tag/v1.2.0) (2023-3-9)
+
+### Features
+
+* material description ([b3cce55](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/commit/b3cce55297e899871c6242eb75f456acb0b7c15b))
+
 <a name="1.1.0"></a>
 ## [1.1.0](https://www.github.com/zulfikar4568/WIK.ServiceOrderMES/releases/tag/v1.1.0) (2023-3-1)
 
